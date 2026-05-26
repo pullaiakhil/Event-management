@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAJMAHAL — India's Most Extraordinary Event Universe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Cinzel:wght@400;600;700;900&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#C9A84C;--gold2:#F0D080;--gold3:#8B6914;--champagne:#F7EACC;--ivory:#FAF6EE;--black:#06050A;--black2:#0D0B14;--black3:#110F1A;--red:#8B1A1A;--red2:#B22222;--platinum:#D4D4D4;--glow:rgba(201,168,76,0.15);--glow2:rgba(201,168,76,0.06);
+}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{background:var(--black);color:var(--champagne);font-family:'Inter',sans-serif;overflow-x:hidden;cursor:none;}
+
+/* CUSTOM CURSOR */
+#cursor{position:fixed;width:12px;height:12px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;transition:transform 0.15s ease;mix-blend-mode:difference;}
+#cursor-ring{position:fixed;width:40px;height:40px;border:1px solid rgba(201,168,76,0.6);border-radius:50%;pointer-events:none;z-index:99998;transition:all 0.25s ease;transform:translate(-50%,-50%);}
+#cursor-trail{position:fixed;pointer-events:none;z-index:99997;}
+
+/* LOADING SCREEN */
+#loader{position:fixed;inset:0;z-index:9999;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1.2s ease;}
+#loader.fade-out{opacity:0;pointer-events:none;}
+.loader-canvas{position:absolute;inset:0;}
+.loader-logo{font-family:'Cinzel',serif;font-size:clamp(3rem,8vw,7rem);font-weight:900;letter-spacing:0.3em;color:transparent;background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;text-align:center;position:relative;z-index:2;opacity:0;animation:logoReveal 1.8s cubic-bezier(0.16,1,0.3,1) 1s forwards;}
+.loader-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(0.8rem,2vw,1.1rem);letter-spacing:0.5em;color:var(--gold);opacity:0;animation:logoReveal 1.5s ease 2.2s forwards;text-align:center;margin-top:1rem;}
+.loader-bar{width:200px;height:1px;background:rgba(201,168,76,0.2);margin-top:3rem;position:relative;z-index:2;}
+.loader-progress{height:100%;background:linear-gradient(90deg,transparent,var(--gold),var(--gold2));width:0;animation:loadBar 2.5s ease 0.5s forwards;}
+.skip-btn{position:absolute;bottom:2rem;right:2rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;color:rgba(201,168,76,0.5);cursor:pointer;border:1px solid rgba(201,168,76,0.2);padding:0.5rem 1.2rem;transition:all 0.3s;z-index:3;}
+.skip-btn:hover{color:var(--gold);border-color:var(--gold);}
+
+@keyframes logoReveal{0%{opacity:0;transform:translateY(30px) scale(0.95);}100%{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes loadBar{0%{width:0;}100%{width:100%;}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.5rem 4rem;display:flex;align-items:center;justify-content:space-between;transition:all 0.5s ease;}
+nav.scrolled{background:rgba(6,5,10,0.85);backdrop-filter:blur(30px);border-bottom:1px solid rgba(201,168,76,0.1);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.4rem;font-weight:900;letter-spacing:0.25em;color:var(--gold);text-decoration:none;}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{font-size:0.7rem;letter-spacing:0.2em;color:var(--platinum);text-decoration:none;transition:all 0.3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;padding:0.7rem 1.8rem;border:1px solid var(--gold);color:var(--gold);background:transparent;cursor:pointer;transition:all 0.4s;position:relative;overflow:hidden;}
+.nav-cta::before{content:'';position:absolute;inset:0;background:var(--gold);transform:translateX(-100%);transition:transform 0.4s ease;}
+.nav-cta:hover::before{transform:translateX(0);}
+.nav-cta:hover{color:var(--black);}
+.nav-cta span{position:relative;z-index:1;}
+
+/* HERO */
+#hero{height:100vh;min-height:700px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+#hero-canvas{position:absolute;inset:0;z-index:0;}
+.hero-content{position:relative;z-index:2;text-align:center;padding:0 2rem;max-width:1100px;}
+.hero-eyebrow{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.5em;color:var(--gold);opacity:0;animation:fadeUp 1s ease 0.5s forwards;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,8vw,7.5rem);font-weight:300;line-height:1.0;margin:1.5rem 0;color:var(--ivory);}
+.hero-title span{color:var(--gold);font-style:italic;}
+.hero-title .line{overflow:hidden;display:block;}
+.hero-title .line-inner{display:block;transform:translateY(100%);opacity:0;animation:slideUp 1s cubic-bezier(0.16,1,0.3,1) forwards;}
+.hero-title .line:nth-child(1) .line-inner{animation-delay:0.8s;}
+.hero-title .line:nth-child(2) .line-inner{animation-delay:1s;}
+.hero-title .line:nth-child(3) .line-inner{animation-delay:1.2s;}
+.hero-sub{font-size:0.85rem;letter-spacing:0.25em;color:var(--platinum);opacity:0;animation:fadeUp 1s ease 1.6s forwards;max-width:600px;margin:0 auto 3rem;}
+.hero-btns{display:flex;gap:1.5rem;justify-content:center;opacity:0;animation:fadeUp 1s ease 2s forwards;}
+.btn-primary{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;padding:1.1rem 3rem;background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));color:var(--black);border:none;cursor:pointer;position:relative;overflow:hidden;transition:all 0.4s;}
+.btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gold2),var(--gold),var(--gold3));opacity:0;transition:opacity 0.4s;}
+.btn-primary:hover::after{opacity:1;}
+.btn-primary span{position:relative;z-index:1;}
+.btn-secondary{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;padding:1.1rem 3rem;border:1px solid rgba(201,168,76,0.5);color:var(--champagne);background:transparent;cursor:pointer;transition:all 0.4s;backdrop-filter:blur(10px);}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold);}
+.hero-stats{position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);display:flex;gap:5rem;z-index:2;opacity:0;animation:fadeUp 1s ease 2.4s forwards;}
+.stat{text-align:center;}
+.stat-num{font-family:'Cinzel',serif;font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat-label{font-size:0.6rem;letter-spacing:0.3em;color:var(--platinum);margin-top:0.3rem;}
+.hero-scroll{position:absolute;bottom:2rem;right:4rem;display:flex;flex-direction:column;align-items:center;gap:0.8rem;z-index:2;opacity:0;animation:fadeUp 1s ease 2.8s forwards;}
+.scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s ease-in-out infinite;}
+.scroll-text{font-size:0.55rem;letter-spacing:0.3em;color:var(--gold);transform:rotate(90deg);writing-mode:vertical-rl;}
+
+@keyframes fadeUp{0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes slideUp{0%{transform:translateY(100%);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+@keyframes scrollPulse{0%,100%{opacity:0.3;transform:scaleY(0.8);}50%{opacity:1;transform:scaleY(1);}}
+
+/* MARQUEE */
+.marquee-section{padding:1.5rem 0;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.05),transparent);border-top:1px solid rgba(201,168,76,0.15);border-bottom:1px solid rgba(201,168,76,0.15);overflow:hidden;}
+.marquee-track{display:flex;gap:4rem;animation:marquee 30s linear infinite;white-space:nowrap;}
+.marquee-item{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.4em;color:var(--gold);opacity:0.7;flex-shrink:0;}
+.marquee-dot{width:4px;height:4px;background:var(--gold);border-radius:50%;opacity:0.5;flex-shrink:0;margin-top:0.4rem;}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* SECTIONS */
+section{position:relative;overflow:hidden;}
+.section-eyebrow{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.5em;color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;}
+.section-eyebrow::before{content:'';width:40px;height:1px;background:var(--gold);opacity:0.5;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:300;line-height:1.1;color:var(--ivory);}
+.section-title em{color:var(--gold);font-style:italic;}
+.section-body{font-size:0.85rem;line-height:2;color:var(--platinum);max-width:560px;}
+.gold-line{width:80px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:2rem 0;}
+
+/* ABOUT */
+#about{padding:10rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
+.about-visual{position:relative;height:600px;}
+.about-img-frame{position:absolute;inset:0;border:1px solid rgba(201,168,76,0.2);}
+.about-img-inner{position:absolute;inset:20px;background:linear-gradient(135deg,var(--black3),#1a1525);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.about-mandala{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.15;}
+.about-stat-cards{position:absolute;right:-2rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:1rem;}
+.about-stat-card{background:rgba(13,11,20,0.9);border:1px solid rgba(201,168,76,0.2);backdrop-filter:blur(20px);padding:1.2rem 1.5rem;min-width:160px;}
+.about-stat-card .num{font-family:'Cinzel',serif;font-size:2rem;font-weight:700;color:var(--gold);}
+.about-stat-card .lbl{font-size:0.6rem;letter-spacing:0.2em;color:var(--platinum);}
+
+/* SERVICES */
+#services{padding:8rem 4rem;background:var(--black2);}
+.services-header{text-align:center;margin-bottom:6rem;}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(201,168,76,0.1);}
+.service-card{background:var(--black2);padding:3.5rem 2.5rem;position:relative;overflow:hidden;transition:all 0.5s ease;cursor:pointer;}
+.service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.08),transparent);opacity:0;transition:opacity 0.5s;}
+.service-card:hover::before{opacity:1;}
+.service-card::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 0.5s;}
+.service-card:hover::after{width:100%;}
+.service-icon{font-size:2.5rem;margin-bottom:1.5rem;display:block;}
+.service-num{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;color:var(--gold3);margin-bottom:1rem;}
+.service-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--ivory);margin-bottom:1rem;line-height:1.2;}
+.service-desc{font-size:0.8rem;color:var(--platinum);line-height:1.9;}
+.service-card:hover .service-name{color:var(--gold);}
+
+/* SHOWCASE */
+#showcase{padding:8rem 4rem;}
+.showcase-header{max-width:700px;margin-bottom:5rem;}
+.showcase-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:300px 300px;gap:1.5px;}
+.showcase-item{position:relative;overflow:hidden;background:var(--black3);cursor:pointer;}
+.showcase-item.large{grid-row:span 2;}
+.showcase-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,5,10,0.9) 0%,rgba(6,5,10,0.3) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:2rem;transform:translateY(30px);transition:transform 0.5s ease;}
+.showcase-item:hover .showcase-overlay{transform:translateY(0);}
+.showcase-cat{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.3em;color:var(--gold);margin-bottom:0.5rem;}
+.showcase-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--ivory);}
+.showcase-bg{width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease;}
+.showcase-item:hover .showcase-bg{transform:scale(1.08);}
+.showcase-pattern{width:100%;height:100%;position:relative;}
+
+/* TESTIMONIALS */
+#testimonials{padding:8rem 4rem;background:var(--black2);text-align:center;}
+.testimonials-header{margin-bottom:5rem;}
+.testimonials-slider{max-width:900px;margin:0 auto;position:relative;}
+.testimonial-card{background:rgba(17,15,26,0.8);border:1px solid rgba(201,168,76,0.15);backdrop-filter:blur(20px);padding:4rem;position:relative;display:none;}
+.testimonial-card.active{display:block;}
+.testimonial-card::before{content:'"';font-family:'Cormorant Garamond',serif;font-size:8rem;color:var(--gold);opacity:0.15;position:absolute;top:-1rem;left:2rem;line-height:1;}
+.testimonial-text{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;font-style:italic;color:var(--ivory);line-height:1.7;margin-bottom:2.5rem;position:relative;}
+.testimonial-author{display:flex;align-items:center;justify-content:center;gap:1.5rem;}
+.author-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--gold3),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1rem;color:var(--black);}
+.author-name{font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:0.15em;color:var(--gold);}
+.author-title{font-size:0.7rem;color:var(--platinum);}
+.testimonial-dots{display:flex;gap:0.8rem;justify-content:center;margin-top:3rem;}
+.t-dot{width:6px;height:6px;border-radius:50%;background:rgba(201,168,76,0.3);cursor:pointer;transition:all 0.3s;}
+.t-dot.active{width:30px;border-radius:3px;background:var(--gold);}
+
+/* CATEGORIES */
+#categories{padding:8rem 4rem;}
+.categories-header{text-align:center;margin-bottom:5rem;}
+.categories-wheel{display:grid;grid-template-columns:repeat(5,1fr);gap:1.5rem;}
+.category-item{border:1px solid rgba(201,168,76,0.15);padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all 0.5s;position:relative;overflow:hidden;background:rgba(13,11,20,0.5);}
+.category-item::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(201,168,76,0.1),transparent);opacity:0;transition:opacity 0.5s;}
+.category-item:hover::before{opacity:1;}
+.category-item:hover{border-color:rgba(201,168,76,0.5);transform:translateY(-5px);}
+.cat-icon{font-size:2rem;margin-bottom:1rem;display:block;}
+.cat-name{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.1em;color:var(--platinum);transition:color 0.3s;}
+.category-item:hover .cat-name{color:var(--gold);}
+
+/* PRICING */
+#pricing{padding:8rem 4rem;background:var(--black2);}
+.pricing-header{text-align:center;margin-bottom:5rem;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(201,168,76,0.1);}
+.pricing-card{background:var(--black2);padding:3.5rem 2.5rem;transition:all 0.4s;position:relative;overflow:hidden;}
+.pricing-card.featured{background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.02));}
+.pricing-card.featured::before{content:'MOST POPULAR';position:absolute;top:1.5rem;right:-2.5rem;background:var(--gold);color:var(--black);font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.2em;padding:0.3rem 3rem;transform:rotate(45deg);transform-origin:center;}
+.pricing-tier{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.4em;color:var(--gold3);margin-bottom:1.5rem;}
+.pricing-name{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--ivory);margin-bottom:0.5rem;}
+.pricing-price{font-family:'Cinzel',serif;font-size:2.5rem;color:var(--gold);margin:1.5rem 0;}
+.pricing-price span{font-size:1rem;color:var(--platinum);}
+.pricing-features{list-style:none;margin:2rem 0;display:flex;flex-direction:column;gap:0.8rem;}
+.pricing-features li{font-size:0.8rem;color:var(--platinum);display:flex;align-items:center;gap:0.8rem;}
+.pricing-features li::before{content:'◆';color:var(--gold);font-size:0.5rem;flex-shrink:0;}
+.pricing-btn{width:100%;padding:1rem;border:1px solid rgba(201,168,76,0.4);background:transparent;color:var(--gold);font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;cursor:pointer;transition:all 0.4s;margin-top:2rem;}
+.pricing-btn:hover,.pricing-card.featured .pricing-btn{background:linear-gradient(135deg,var(--gold3),var(--gold));color:var(--black);border-color:transparent;}
+
+/* PROCESS */
+#process{padding:8rem 4rem;}
+.process-header{text-align:center;margin-bottom:6rem;}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+.process-steps::before{content:'';position:absolute;top:3rem;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--gold3),var(--gold),var(--gold3),transparent);opacity:0.4;}
+.process-step{text-align:center;padding:0 2rem;position:relative;}
+.step-num{font-family:'Cinzel',serif;font-size:3.5rem;font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(201,168,76,0.2);margin-bottom:2rem;line-height:1;}
+.step-icon{width:60px;height:60px;border:1px solid rgba(201,168,76,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:1.5rem;background:var(--black2);position:relative;z-index:1;}
+.step-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--ivory);margin-bottom:0.8rem;}
+.step-desc{font-size:0.75rem;color:var(--platinum);line-height:1.8;}
+
+/* AWARDS */
+#awards{padding:6rem 4rem;background:var(--black2);overflow:hidden;}
+.awards-header{text-align:center;margin-bottom:4rem;}
+.awards-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:2rem;align-items:center;}
+.award-item{text-align:center;padding:1.5rem;border:1px solid rgba(201,168,76,0.1);transition:all 0.4s;}
+.award-item:hover{border-color:rgba(201,168,76,0.4);background:rgba(201,168,76,0.03);}
+.award-icon{font-size:2rem;margin-bottom:0.8rem;display:block;}
+.award-name{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.3rem;}
+.award-year{font-size:0.6rem;color:var(--platinum);}
+
+/* BOOKING */
+#booking{padding:8rem 4rem;}
+.booking-container{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.booking-form{background:rgba(13,11,20,0.8);border:1px solid rgba(201,168,76,0.15);padding:3.5rem;backdrop-filter:blur(20px);}
+.form-step{display:none;}
+.form-step.active{display:block;}
+.form-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--ivory);margin-bottom:2rem;}
+.form-group{margin-bottom:1.5rem;}
+.form-group label{display:block;font-size:0.65rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:0.6rem;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(6,5,10,0.8);border:1px solid rgba(201,168,76,0.15);color:var(--champagne);font-family:'Inter',sans-serif;font-size:0.85rem;padding:0.9rem 1rem;outline:none;transition:border-color 0.3s;appearance:none;}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(212,212,212,0.3);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);}
+.form-group select option{background:var(--black2);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.budget-slider{width:100%;-webkit-appearance:none;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));outline:none;}
+.budget-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid var(--black);}
+.budget-display{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold);text-align:right;margin-top:0.5rem;}
+.form-btn{width:100%;padding:1.1rem;background:linear-gradient(135deg,var(--gold3),var(--gold));color:var(--black);font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;border:none;cursor:pointer;transition:all 0.4s;margin-top:1rem;}
+.form-btn:hover{background:linear-gradient(135deg,var(--gold),var(--gold2));}
+.step-indicator{display:flex;gap:0.5rem;margin-bottom:2rem;}
+.step-dot{width:8px;height:8px;border-radius:50%;background:rgba(201,168,76,0.2);}
+.step-dot.active{background:var(--gold);}
+.step-dot.done{background:rgba(201,168,76,0.5);}
+
+/* GLOBAL MAP */
+#destinations{padding:8rem 4rem;background:var(--black2);text-align:center;}
+.destinations-header{margin-bottom:4rem;}
+.dest-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;text-align:left;}
+.dest-card{border:1px solid rgba(201,168,76,0.15);padding:2rem;position:relative;overflow:hidden;cursor:pointer;transition:all 0.4s;background:rgba(13,11,20,0.5);}
+.dest-card:hover{border-color:rgba(201,168,76,0.4);transform:translateY(-3px);}
+.dest-flag{font-size:2rem;margin-bottom:1rem;display:block;}
+.dest-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--ivory);margin-bottom:0.3rem;}
+.dest-count{font-size:0.7rem;color:var(--gold);}
+
+/* AI PLANNER */
+#ai-planner{padding:8rem 4rem;}
+.ai-header{text-align:center;margin-bottom:4rem;}
+.ai-container{max-width:800px;margin:0 auto;background:rgba(13,11,20,0.8);border:1px solid rgba(201,168,76,0.2);backdrop-filter:blur(20px);padding:3rem;position:relative;overflow:hidden;}
+.ai-container::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top,rgba(201,168,76,0.05),transparent 60%);pointer-events:none;}
+.ai-badge{display:inline-flex;align-items:center;gap:0.5rem;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.4rem 1rem;margin-bottom:2rem;}
+.ai-badge::before{content:'●';color:var(--gold);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:0.3;}50%{opacity:1;}}
+.ai-chat{min-height:300px;margin-bottom:1.5rem;display:flex;flex-direction:column;gap:1rem;}
+.ai-msg{display:flex;gap:1rem;align-items:flex-start;}
+.ai-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold3),var(--gold));display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;color:var(--black);}
+.ai-bubble{background:rgba(17,15,26,0.8);border:1px solid rgba(201,168,76,0.1);padding:1rem 1.3rem;flex:1;font-size:0.85rem;color:var(--platinum);line-height:1.8;}
+.ai-user{flex-direction:row-reverse;}
+.ai-user .ai-bubble{background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.2);color:var(--champagne);}
+.ai-input-row{display:flex;gap:1rem;}
+.ai-input{flex:1;background:rgba(6,5,10,0.8);border:1px solid rgba(201,168,76,0.2);color:var(--champagne);font-family:'Inter',sans-serif;font-size:0.85rem;padding:0.9rem 1.2rem;outline:none;}
+.ai-input::placeholder{color:rgba(212,212,212,0.3);}
+.ai-input:focus{border-color:var(--gold);}
+.ai-send{padding:0.9rem 1.5rem;background:linear-gradient(135deg,var(--gold3),var(--gold));border:none;color:var(--black);cursor:pointer;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.1em;transition:all 0.3s;}
+.ai-send:hover{background:linear-gradient(135deg,var(--gold),var(--gold2));}
+
+/* TEAM */
+#team{padding:8rem 4rem;background:var(--black2);}
+.team-header{text-align:center;margin-bottom:5rem;}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;}
+.team-card{cursor:pointer;position:relative;overflow:hidden;}
+.team-photo{width:100%;aspect-ratio:3/4;background:linear-gradient(135deg,var(--black3),#1a1525);position:relative;overflow:hidden;}
+.team-photo-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;transition:transform 0.5s;}
+.team-card:hover .team-photo-inner{transform:scale(1.05);}
+.team-info{padding:1.5rem 0;}
+.team-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--ivory);margin-bottom:0.3rem;}
+.team-role{font-size:0.65rem;letter-spacing:0.2em;color:var(--gold);}
+.team-overlay{position:absolute;inset:0;background:rgba(6,5,10,0.85);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.4s;}
+.team-card:hover .team-overlay{opacity:1;}
+.team-social{display:flex;gap:1rem;}
+.t-social-btn{width:40px;height:40px;border:1px solid rgba(201,168,76,0.5);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1rem;transition:all 0.3s;}
+.t-social-btn:hover{background:var(--gold);color:var(--black);}
+.team-card{
+    position:relative;
+    overflow:hidden;
+}
+
+.team-image{
+    width:100%;
+    height:540px;
+    overflow:hidden;
+    border-radius:20px;
+}
+
+.team-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:0.8s ease;
+}
+
+.team-card:hover img{
+    transform:scale(1.08);
+}
+
+/* BLOG */
+#blog{padding:8rem 4rem;}
+.blog-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem;}
+.blog-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2rem;}
+.blog-card{position:relative;cursor:pointer;overflow:hidden;}
+.blog-card.featured .blog-img{height:400px;}
+.blog-img{width:100%;height:220px;background:var(--black3);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:4rem;}
+.blog-cat{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.3em;color:var(--gold);margin:1.2rem 0 0.5rem;}
+.blog-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--ivory);line-height:1.3;margin-bottom:0.5rem;transition:color 0.3s;}
+.blog-card:hover .blog-title{color:var(--gold);}
+.blog-date{font-size:0.65rem;color:var(--platinum);}
+
+/* CONTACT */
+#contact{padding:8rem 4rem;background:var(--black2);}
+.contact-container{display:grid;grid-template-columns:1fr 1fr;gap:6rem;}
+.contact-info{display:flex;flex-direction:column;gap:3rem;}
+.contact-detail{display:flex;gap:1.5rem;align-items:flex-start;}
+.contact-icon{font-size:1.5rem;color:var(--gold);flex-shrink:0;margin-top:0.2rem;}
+.contact-label{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;color:var(--gold);margin-bottom:0.3rem;}
+.contact-val{font-size:0.9rem;color:var(--platinum);line-height:1.7;}
+.contact-form{background:rgba(13,11,20,0.8);border:1px solid rgba(201,168,76,0.15);padding:3.5rem;backdrop-filter:blur(20px);}
+.contact-form .form-group input,.contact-form .form-group textarea{background:rgba(6,5,10,0.8);}
+
+/* FOOTER */
+footer{background:var(--black);border-top:1px solid rgba(201,168,76,0.1);padding:5rem 4rem 2rem;}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem;}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.8rem;font-weight:900;color:var(--gold);margin-bottom:1rem;}
+.footer-tagline{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--platinum);}
+.footer-heading{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.3em;color:var(--gold);margin-bottom:1.5rem;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:0.7rem;}
+.footer-links a{font-size:0.8rem;color:var(--platinum);text-decoration:none;transition:color 0.3s;}
+.footer-links a:hover{color:var(--gold);}
+.footer-bottom{border-top:1px solid rgba(201,168,76,0.08);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;}
+.footer-copy{font-size:0.7rem;color:rgba(212,212,212,0.4);}
+.footer-socials{display:flex;gap:1rem;}
+.f-social{width:36px;height:36px;border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;color:var(--platinum);font-size:0.9rem;cursor:pointer;transition:all 0.3s;text-decoration:none;}
+.f-social:hover{border-color:var(--gold);color:var(--gold);}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(40px);transition:all 0.9s cubic-bezier(0.16,1,0.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:all 0.9s cubic-bezier(0.16,1,0.3,1);}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(40px);transition:all 0.9s cubic-bezier(0.16,1,0.3,1);}
+.reveal-right.visible{opacity:1;transform:translateX(0);}
+
+/* GOLDEN DIVIDER */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold3),var(--gold),var(--gold3),transparent);margin:0;opacity:0.3;}
+
+/* MOBILE MENU */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:0.5rem;}
+.hamburger span{width:25px;height:1px;background:var(--gold);transition:all 0.3s;}
+.mobile-menu{position:fixed;inset:0;background:rgba(6,5,10,0.97);backdrop-filter:blur(30px);z-index:998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transform:translateX(100%);transition:transform 0.5s ease;}
+.mobile-menu.open{transform:translateX(0);}
+.mobile-menu a{font-family:'Cinzel',serif;font-size:1.5rem;letter-spacing:0.3em;color:var(--champagne);text-decoration:none;transition:color 0.3s;}
+.mobile-menu a:hover{color:var(--gold);}
+.blog-img{
+    width:100%;
+    height:320px;
+    overflow:hidden;
+    border-radius:24px;
+
+    background:linear-gradient(
+        135deg,
+        #1a0f2e,
+        #2d1854
+    );
+}
+
+.blog-img img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+/* GLOW EFFECTS */
+.gold-glow{box-shadow:0 0 40px rgba(201,168,76,0.1);}
+.section-bg-pattern{position:absolute;inset:0;opacity:0.03;pointer-events:none;background-image:radial-gradient(circle,var(--gold) 1px,transparent 1px);background-size:40px 40px;}
+
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;}
+  .nav-links,.nav-cta{display:none;}
+  .hamburger{display:flex;}
+  #about{grid-template-columns:1fr;padding:5rem 1.5rem;}
+  .about-visual{height:350px;}
+  .about-stat-cards{position:static;transform:none;flex-direction:row;flex-wrap:wrap;margin-top:2rem;}
+  #services{padding:5rem 1.5rem;}
+  .services-grid{grid-template-columns:1fr;}
+  #showcase{padding:5rem 1.5rem;}
+  .showcase-grid{grid-template-columns:1fr;grid-template-rows:auto;}
+  .showcase-item.large{grid-row:span 1;}
+  #categories{padding:5rem 1.5rem;}
+  .categories-wheel{grid-template-columns:repeat(3,1fr);}
+  #pricing{padding:5rem 1.5rem;}
+  .pricing-grid{grid-template-columns:1fr;}
+  #process{padding:5rem 1.5rem;}
+  .process-steps{grid-template-columns:1fr 1fr;gap:2rem;}
+  .process-steps::before{display:none;}
+  #awards{padding:4rem 1.5rem;}
+  .awards-grid{grid-template-columns:repeat(3,1fr);}
+  .booking-container{grid-template-columns:1fr;gap:3rem;}
+  .dest-grid{grid-template-columns:repeat(2,1fr);}
+  .team-grid{grid-template-columns:repeat(2,1fr);}
+  .blog-grid{grid-template-columns:1fr;}
+  .contact-container{grid-template-columns:1fr;gap:3rem;}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2rem;}
+  .hero-stats{flex-direction:column;gap:1.5rem;left:auto;right:2rem;transform:none;bottom:6rem;}
+  #hero{padding:0 1.5rem;}
+  #booking{padding:5rem 1.5rem;}
+  #destinations{padding:5rem 1.5rem;}
+  #ai-planner{padding:5rem 1.5rem;}
+  #team{padding:5rem 1.5rem;}
+  #blog{padding:5rem 1.5rem;}
+  .blog-header{flex-direction:column;align-items:flex-start;gap:1rem;}
+  #contact{padding:5rem 1.5rem;}
+  footer{padding:4rem 1.5rem 2rem;}
+  .footer-top{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;gap:1rem;text-align:center;}
+  #testimonials{padding:5rem 1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <canvas class="loader-canvas" id="loaderCanvas"></canvas>
+  <div style="text-align:center;position:relative;z-index:2;">
+    <div class="loader-logo">RAJMAHAL</div>
+    <div class="loader-sub">INDIA'S FINEST LUXURY EVENTS</div>
+    <div class="loader-bar"><div class="loader-progress"></div></div>
+  </div>
+  <button class="skip-btn" onclick="skipLoader()">SKIP INTRO</button>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">RAJMAHAL</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#showcase">Portfolio</a></li>
+    <li><a href="#pricing">Packages</a></li>
+    <li><a href="#booking">Book Event</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})"><span>BEGIN YOUR JOURNEY</span></button>
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#services" onclick="toggleMenu()">Services</a>
+  <a href="#showcase" onclick="toggleMenu()">Portfolio</a>
+  <a href="#pricing" onclick="toggleMenu()">Packages</a>
+  <a href="#booking" onclick="toggleMenu()">Book Event</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-eyebrow">INDIA'S MOST PRESTIGIOUS EVENT ATELIER</div>
+    <h1 class="hero-title">
+      <span class="line"><span class="line-inner">Crafting India's</span></span>
+      <span class="line"><span class="line-inner"><em>Most Extraordinary</em></span></span>
+      <span class="line"><span class="line-inner">Celebrations</span></span>
+    </h1>
+    <p class="hero-sub">WHERE ROYAL GRANDEUR MEETS FUTURISTIC ELEGANCE — EVENTS BEYOND IMAGINATION</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('showcase').scrollIntoView({behavior:'smooth'})"><span>EXPLORE OUR UNIVERSE</span></button>
+      <button class="btn-secondary" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">PLAN YOUR EVENT</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num" data-target="2500">0</div><div class="stat-label">EVENTS CURATED</div></div>
+    <div class="stat"><div class="stat-num" data-target="18">0</div><div class="stat-label">YEARS OF MASTERY</div></div>
+    <div class="stat"><div class="stat-num" data-target="47">0</div><div class="stat-label">GLOBAL DESTINATIONS</div></div>
+    <div class="stat"><div class="stat-num" data-target="99">0</div><div class="stat-label">CLIENT SATISFACTION %</div></div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <div class="scroll-text">SCROLL</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track" id="marqueeTrack">
+    <span class="marquee-item">ROYAL WEDDINGS</span><span class="marquee-dot"></span>
+    <span class="marquee-item">CELEBRITY EVENTS</span><span class="marquee-dot"></span>
+    <span class="marquee-item">DESTINATION SOIRÉES</span><span class="marquee-dot"></span>
+    <span class="marquee-item">LUXURY CONCERTS</span><span class="marquee-dot"></span>
+    <span class="marquee-item">SANGEET CEREMONIES</span><span class="marquee-dot"></span>
+    <span class="marquee-item">FASHION GALAS</span><span class="marquee-dot"></span>
+    <span class="marquee-item">CORPORATE SUMMITS</span><span class="marquee-dot"></span>
+    <span class="marquee-item">BILLIONAIRE PARTIES</span><span class="marquee-dot"></span>
+    <span class="marquee-item">ROYAL WEDDINGS</span><span class="marquee-dot"></span>
+    <span class="marquee-item">CELEBRITY EVENTS</span><span class="marquee-dot"></span>
+    <span class="marquee-item">DESTINATION SOIRÉES</span><span class="marquee-dot"></span>
+    <span class="marquee-item">LUXURY CONCERTS</span><span class="marquee-dot"></span>
+    <span class="marquee-item">SANGEET CEREMONIES</span><span class="marquee-dot"></span>
+    <span class="marquee-item">FASHION GALAS</span><span class="marquee-dot"></span>
+    <span class="marquee-item">CORPORATE SUMMITS</span><span class="marquee-dot"></span>
+    <span class="marquee-item">BILLIONAIRE PARTIES</span><span class="marquee-dot"></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-text reveal-left">
+    <div class="section-eyebrow">OUR LEGACY</div>
+    <h2 class="section-title">Where Every<br>Celebration Becomes<br><em>A Legend</em></h2>
+    <div class="gold-line"></div>
+    <p class="section-body">Since 2007, Rajmahal Events has redefined the art of Indian celebrations. We transform visionary dreams into living, breathing spectacles that transcend the ordinary — crafting immersive experiences that blend ancient royal grandeur with tomorrow's aesthetic frontier.</p>
+    <p class="section-body" style="margin-top:1.5rem;">Our atelier of master curators, Bollywood-level designers, and internationally acclaimed production artists work in perfect harmony to deliver events that are whispered about for generations.</p>
+    <div class="hero-btns" style="justify-content:flex-start;margin-top:2.5rem;opacity:1;animation:none;">
+      <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})"><span>OUR STORY</span></button>
+    </div>
+  </div>
+  <div class="about-visual reveal-right">
+    <div class="about-img-frame">
+      <div class="about-img-inner">
+        <div class="about-mandala">
+          <svg viewBox="0 0 400 400" width="100%" height="100%" style="opacity:0.6;">
+            <defs>
+              <radialGradient id="mg1" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="200" cy="200" r="180" fill="none" stroke="#C9A84C" stroke-width="0.5" opacity="0.3"/>
+            <circle cx="200" cy="200" r="140" fill="none" stroke="#C9A84C" stroke-width="0.5" opacity="0.3"/>
+            <circle cx="200" cy="200" r="100" fill="none" stroke="#C9A84C" stroke-width="0.5" opacity="0.3"/>
+            <circle cx="200" cy="200" r="60" fill="none" stroke="#C9A84C" stroke-width="0.5" opacity="0.3"/>
+            <g transform="rotate(0 200 200)"><line x1="200" y1="20" x2="200" y2="380" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/></g>
+            <g transform="rotate(30 200 200)"><line x1="200" y1="20" x2="200" y2="380" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/></g>
+            <g transform="rotate(60 200 200)"><line x1="200" y1="20" x2="200" y2="380" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/></g>
+            <g transform="rotate(90 200 200)"><line x1="200" y1="20" x2="200" y2="380" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/></g>
+            <g transform="rotate(120 200 200)"><line x1="200" y1="20" x2="200" y2="380" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/></g>
+            <g transform="rotate(150 200 200)"><line x1="200" y1="20" x2="200" y2="380" stroke="#C9A84C" stroke-width="0.5" opacity="0.2"/></g>
+            <circle cx="200" cy="200" r="20" fill="url(#mg1)"/>
+            <text x="200" y="208" text-anchor="middle" font-family="Cinzel" font-size="14" fill="#C9A84C" letter-spacing="4">✦</text>
+          </svg>
+        </div>
+        <div style="text-align:center;position:relative;z-index:1;">
+          <div style="font-family:'Cinzel',serif;font-size:5rem;color:var(--gold);opacity:0.4;line-height:1;">✦</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--champagne);letter-spacing:0.3em;margin-top:1rem;">RAJMAHAL</div>
+          <div style="font-size:0.65rem;letter-spacing:0.4em;color:var(--gold);margin-top:0.5rem;">EST. 2007</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-stat-cards">
+      <div class="about-stat-card gold-glow"><div class="num">₹2B+</div><div class="lbl">EVENTS DELIVERED</div></div>
+      <div class="about-stat-card gold-glow"><div class="num">500+</div><div class="lbl">CELEBRITY CLIENTS</div></div>
+      <div class="about-stat-card gold-glow"><div class="num">47</div><div class="lbl">DESTINATIONS</div></div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">WHAT WE CREATE</div>
+    <h2 class="section-title" style="text-align:center;">Our Signature<br><em>Artistry</em></h2>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <span class="service-icon">💍</span>
+      <div class="service-num">01</div>
+      <div class="service-name">Royal Wedding Productions</div>
+      <p class="service-desc">Maharaja-level wedding experiences with architectural floral installations, live orchestras, Bollywood performances, and immersive royal atmospheres that make every moment legendary.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🌍</span>
+      <div class="service-num">02</div>
+      <div class="service-name">Destination Wedding Escapes</div>
+      <p class="service-desc">From Rajasthan's palace forts to Santorini cliffs, Dubai skylines to Maldivian overwater villas — we transform any destination into your personal fairytale world.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">⭐</span>
+      <div class="service-num">03</div>
+      <div class="service-name">Celebrity & VIP Events</div>
+      <p class="service-desc">Ultra-private, ultra-exclusive events for India's most influential names. Absolute discretion, extraordinary scale, unmatched production quality.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🎪</span>
+      <div class="service-num">04</div>
+      <div class="service-name">Luxury Sangeet & Mehendi</div>
+      <p class="service-desc">Emotionally rich ceremony experiences with stunning custom décor, curated performances, live music curation, and photo-worthy atmospheric design.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🎭</span>
+      <div class="service-num">05</div>
+      <div class="service-name">Fashion & Gala Events</div>
+      <p class="service-desc">Runway-ready production for fashion weeks, brand launches, awards galas, and high-fashion experiences that set industry benchmarks.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🏛️</span>
+      <div class="service-num">06</div>
+      <div class="service-name">Corporate & Brand Experiences</div>
+      <p class="service-desc">Transformative corporate galas, product launches, investor summits, and brand activations that leave lasting impressions on every attendee.</p>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- SHOWCASE -->
+<section id="showcase">
+  <div class="showcase-header reveal">
+    <div class="section-eyebrow">OUR MASTERWORKS</div>
+    <h2 class="section-title">Iconic Events<br><em>Etched in History</em></h2>
+  </div>
+  <div class="showcase-grid reveal">
+    <div class="showcase-item large">
+      <div class="showcase-pattern" style="background:linear-gradient(135deg,#1a0a2e,#2d1854,#1a0a2e);display:flex;align-items:center;justify-content:center;">
+        <div style="text-align:center;">
+          <div class="event-icon">
+
+   <img src="public/royal.jpeg" alt="Royal Wedding">
+
+</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--gold);opacity:0.8;margin-top:1rem;">RAJASTHAN PALACE WEDDING</div>
+        </div>
+      </div>
+      <div class="showcase-overlay">
+        <div class="showcase-cat">ROYAL WEDDING • JAIPUR</div>
+        <div class="showcase-title">The Kapoor-Mehta Maharaja Wedding</div>
+      </div>
+    </div>
+    <div class="showcase-item">
+      <div class="showcase-pattern" style="background:linear-gradient(135deg,#0a1a2e,#1854,#0a1a2e);display:flex;align-items:center;justify-content:center;">
+        <div class="event-icon">
+
+   <img src="public/destiny.jpg" alt="Destination">
+
+</div>
+      </div>
+      <div class="showcase-overlay">
+        <div class="showcase-cat">DESTINATION • MALDIVES</div>
+        <div class="showcase-title">Overwater Paradise Soirée</div>
+      </div>
+    </div>
+    <div class="showcase-item">
+      <div class="showcase-pattern" style="background:linear-gradient(135deg,#1a0a0a,#2e0a0a,#1a0a0a);display:flex;align-items:center;justify-content:center;">
+        <div class="event-icon">
+
+   <img src="public/concert.jpg" alt="Concert Event">
+
+</div>
+      </div>
+      <div class="showcase-overlay">
+        <div class="showcase-cat">CONCERT • MUMBAI</div>
+        <div class="showcase-title">Bollywood Mega Concert 2024</div>
+      </div>
+    </div>
+    <div class="showcase-item">
+      <div class="showcase-pattern" style="background:linear-gradient(135deg,#0a1a0a,#154a1a,#0a1a0a);display:flex;align-items:center;justify-content:center;">
+        <div class="event-icon">
+
+   <img src="public/fashion.png" alt="Fashion">
+
+</div>
+      </div>
+      <div class="showcase-overlay">
+        <div class="showcase-cat">FASHION • DELHI</div>
+        <div class="showcase-title">India Fashion Week Gala</div>
+      </div>
+    </div>
+    <div class="showcase-item">
+      <div class="showcase-pattern" style="background:linear-gradient(135deg,#1a1a0a,#2e2a0a,#1a1a0a);display:flex;align-items:center;justify-content:center;">
+        <div class="event-icon">
+
+   <img src="public/sangeet.webp" alt="Sangeet">
+
+</div>
+      </div>
+      <div class="showcase-overlay">
+        <div class="showcase-cat">SANGEET • UDAIPUR</div>
+        <div class="showcase-title">The Royal Sangeet at Lake Palace</div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- CATEGORIES -->
+<section id="categories" style="background:var(--black2);">
+  <div class="section-bg-pattern"></div>
+  <div class="categories-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">EVENT UNIVERSE</div>
+    <h2 class="section-title">Every Celebration<br><em>We Master</em></h2>
+  </div>
+  <div class="categories-wheel reveal">
+    <div class="category-item"><span class="cat-icon">💒</span><div class="cat-name">ROYAL WEDDINGS</div></div>
+    <div class="category-item"><span class="cat-icon">✈️</span><div class="cat-name">DESTINATION WEDDINGS</div></div>
+    <div class="category-item"><span class="cat-icon">⭐</span><div class="cat-name">CELEBRITY WEDDINGS</div></div>
+    <div class="category-item"><span class="cat-icon">🎵</span><div class="cat-name">SANGEET EVENTS</div></div>
+    <div class="category-item"><span class="cat-icon">🌸</span><div class="cat-name">MEHENDI CEREMONIES</div></div>
+    <div class="category-item"><span class="cat-icon">🌼</span><div class="cat-name">HALDI CELEBRATIONS</div></div>
+    <div class="category-item"><span class="cat-icon">🥂</span><div class="cat-name">RECEPTION GALAS</div></div>
+    <div class="category-item"><span class="cat-icon">🏢</span><div class="cat-name">CORPORATE EVENTS</div></div>
+    <div class="category-item"><span class="cat-icon">🎤</span><div class="cat-name">LUXURY CONCERTS</div></div>
+    <div class="category-item"><span class="cat-icon">👗</span><div class="cat-name">FASHION SHOWS</div></div>
+    <div class="category-item"><span class="cat-icon">🚀</span><div class="cat-name">PRODUCT LAUNCHES</div></div>
+    <div class="category-item"><span class="cat-icon">👑</span><div class="cat-name">VIP CELEBRATIONS</div></div>
+    <div class="category-item"><span class="cat-icon">💎</span><div class="cat-name">BILLIONAIRE PARTIES</div></div>
+    <div class="category-item"><span class="cat-icon">🎂</span><div class="cat-name">LUXURY BIRTHDAYS</div></div>
+    <div class="category-item"><span class="cat-icon">🌐</span><div class="cat-name">INTERNATIONAL EVENTS</div></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">HOW WE CREATE MAGIC</div>
+    <h2 class="section-title" style="text-align:center;">The <em>Rajmahal</em> Method</h2>
+  </div>
+  <div class="process-steps reveal">
+    <div class="process-step">
+      <div class="step-num">01</div>
+      <div class="step-icon">✨</div>
+      <div class="step-name">Vision Discovery</div>
+      <p class="step-desc">An intimate consultation where your deepest desires, aesthetic preferences, and emotional aspirations are explored and transformed into a creative blueprint.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">02</div>
+      <div class="step-icon">🎨</div>
+      <div class="step-name">Concept Architecture</div>
+      <p class="step-desc">Our design maestros craft immersive mood boards, 3D renders, and atmospheric concepts that bring your vision into vivid, breathtaking reality.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">03</div>
+      <div class="step-icon">⚙️</div>
+      <div class="step-name">Royal Production</div>
+      <p class="step-desc">Elite artisans, international vendors, and our master production team execute every detail with obsessive precision and uncompromising quality.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">04</div>
+      <div class="step-icon">👑</div>
+      <div class="step-name">Legendary Experience</div>
+      <p class="step-desc">The curtain rises on your extraordinary celebration — a living, breathing masterpiece that exceeds every expectation and creates lifelong memories.</p>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">INVESTMENT TIERS</div>
+    <h2 class="section-title" style="text-align:center;">Choose Your<br><em>Level of Grandeur</em></h2>
+  </div>
+  <div class="pricing-grid reveal">
+    <div class="pricing-card">
+      <div class="pricing-tier">SILVER TIER</div>
+      <div class="pricing-name">Prestige</div>
+      <div class="pricing-price">₹25L <span>onwards</span></div>
+      <ul class="pricing-features">
+        <li>Venue Selection & Booking</li>
+        <li>Décor Design & Execution</li>
+        <li>Catering Management</li>
+        <li>Photography Direction</li>
+        <li>Guest Coordination</li>
+        <li>Day-of Event Management</li>
+      </ul>
+      <button class="pricing-btn">ENQUIRE NOW</button>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-tier">GOLD TIER</div>
+      <div class="pricing-name">Royal</div>
+      <div class="pricing-price">₹75L <span>onwards</span></div>
+      <ul class="pricing-features">
+        <li>All Prestige Features</li>
+        <li>Custom 3D Event Design</li>
+        <li>International Vendor Access</li>
+        <li>Celebrity Entertainment</li>
+        <li>Bespoke Floral Architecture</li>
+        <li>Live Broadcast Production</li>
+        <li>Luxury Hospitality Management</li>
+      </ul>
+      <button class="pricing-btn">ENQUIRE NOW</button>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-tier">PLATINUM TIER</div>
+      <div class="pricing-name">Maharaja</div>
+      <div class="pricing-price">₹2Cr+ <span>onwards</span></div>
+      <ul class="pricing-features">
+        <li>All Royal Features</li>
+        <li>Full Destination Management</li>
+        <li>International Bollywood Acts</li>
+        <li>Private Jet & Yacht Coordination</li>
+        <li>Palace & Fort Takeovers</li>
+        <li>24/7 Concierge Service</li>
+        <li>Legacy Documentation Team</li>
+      </ul>
+      <button class="pricing-btn">ENQUIRE NOW</button>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="testimonials-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">VOICES OF ROYALTY</div>
+    <h2 class="section-title" style="text-align:center;">What Our Clients<br><em>Say</em></h2>
+  </div>
+  <div class="testimonials-slider reveal">
+    <div class="testimonial-card active">
+      <p class="testimonial-text">Rajmahal transformed our wedding into an experience that felt like stepping into a Bollywood fantasy. Every detail was crafted with such love and artistry — our guests still speak about it three years later.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">PR</div>
+        <div><div class="author-name">Priya Rathore</div><div class="author-title">Business Mogul & Socialite, Mumbai</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">I've attended events across Paris, Dubai, and New York — none compared to what Rajmahal created for our product launch. They've redefined Indian event production on a global scale.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AK</div>
+        <div><div class="author-name">Aditya Khanna</div><div class="author-title">CEO, Luxe Brands India</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">Our destination wedding in Udaipur was beyond anything I imagined. The team handled every detail flawlessly — from a 100-piece orchestra to architectural floral installations that left everyone speechless.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">SM</div>
+        <div><div class="author-name">Shriya Malhotra</div><div class="author-title">Actress & Entrepreneur, Delhi</div></div>
+      </div>
+    </div>
+    <div class="testimonial-dots">
+      <div class="t-dot active" onclick="goToSlide(0)"></div>
+      <div class="t-dot" onclick="goToSlide(1)"></div>
+      <div class="t-dot" onclick="goToSlide(2)"></div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="awards-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">RECOGNITION</div>
+    <h2 class="section-title" style="text-align:center;">Awards & <em>Acclaim</em></h2>
+  </div>
+  <div class="awards-grid reveal">
+    <div class="award-item"><span class="award-icon">🏆</span><div class="award-name">BEST LUXURY EVENT COMPANY</div><div class="award-year">WEA 2024</div></div>
+    <div class="award-item"><span class="award-icon">🥇</span><div class="award-name">INDIA'S #1 WEDDING PLANNER</div><div class="award-year">WMG 2023</div></div>
+    <div class="award-item"><span class="award-icon">⭐</span><div class="award-name">EXCELLENCE IN DESIGN</div><div class="award-year">ILEA 2023</div></div>
+    <div class="award-item"><span class="award-icon">💎</span><div class="award-name">LUXURY BRAND OF THE YEAR</div><div class="award-year">LBOTY 2022</div></div>
+    <div class="award-item"><span class="award-icon">🎖️</span><div class="award-name">BEST DESTINATION WEDDING</div><div class="award-year">BWIA 2024</div></div>
+    <div class="award-item"><span class="award-icon">👑</span><div class="award-name">ROYAL HOSPITALITY AWARD</div><div class="award-year">RHA 2023</div></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="booking-container">
+    <div class="reveal-left">
+      <div class="section-eyebrow">BEGIN YOUR JOURNEY</div>
+      <h2 class="section-title">Reserve Your<br><em>Extraordinary</em><br>Event</h2>
+      <div class="gold-line"></div>
+      <p class="section-body">Every extraordinary celebration begins with a single conversation. Share your vision with us, and our master curators will transform your dream into an unforgettable reality.</p>
+      <div style="margin-top:3rem;display:flex;flex-direction:column;gap:1.5rem;">
+        <div style="display:flex;align-items:center;gap:1rem;">
+          <div style="width:50px;height:50px;border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">📞</div>
+          <div><div style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;color:var(--gold);">PRIVATE CONSULTATION</div><div style="color:var(--platinum);font-size:0.9rem;">+91 98765 43210</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;">
+          <div style="width:50px;height:50px;border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">✉️</div>
+          <div><div style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;color:var(--gold);">EXCLUSIVE INQUIRIES</div><div style="color:var(--platinum);font-size:0.9rem;">concierge@rajmahalevents.com</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="booking-form reveal-right">
+      <div class="step-indicator">
+        <div class="step-dot active" id="sd1"></div>
+        <div class="step-dot" id="sd2"></div>
+        <div class="step-dot" id="sd3"></div>
+      </div>
+      <div class="form-step active" id="step1">
+        <div class="form-title">Tell Us About You</div>
+        <div class="form-row">
+          <div class="form-group"><label>FIRST NAME</label><input type="text" placeholder="Your first name"></div>
+          <div class="form-group"><label>LAST NAME</label><input type="text" placeholder="Your last name"></div>
+        </div>
+        <div class="form-group"><label>EMAIL ADDRESS</label><input type="email" placeholder="your@email.com"></div>
+        <div class="form-group"><label>PHONE NUMBER</label><input type="tel" placeholder="+91 XXXXX XXXXX"></div>
+        <button class="form-btn" onclick="nextStep(2)">CONTINUE →</button>
+      </div>
+      <div class="form-step" id="step2">
+        <div class="form-title">Your Event Vision</div>
+        <div class="form-group"><label>EVENT TYPE</label>
+          <select><option>Royal Wedding</option><option>Destination Wedding</option><option>Celebrity Wedding</option><option>Sangeet Ceremony</option><option>Corporate Event</option><option>Concert</option><option>Fashion Show</option><option>Private Party</option></select>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>EVENT DATE</label><input type="date"></div>
+          <div class="form-group"><label>GUEST COUNT</label><input type="number" placeholder="500+"></div>
+        </div>
+        <div class="form-group"><label>PREFERRED VENUE / DESTINATION</label><input type="text" placeholder="e.g. Jaipur, Maldives, Dubai..."></div>
+        <div class="form-group">
+          <label>APPROXIMATE BUDGET</label>
+          <input type="range" class="budget-slider" id="budgetSlider" min="25" max="500" value="75" oninput="updateBudget(this.value)">
+          <div class="budget-display" id="budgetDisplay">₹75 Lakhs</div>
+        </div>
+        <div style="display:flex;gap:1rem;">
+          <button class="form-btn" style="background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--gold);" onclick="nextStep(1)">← BACK</button>
+          <button class="form-btn" onclick="nextStep(3)">CONTINUE →</button>
+        </div>
+      </div>
+      <div class="form-step" id="step3">
+        <div class="form-title">Your Dream Celebration</div>
+        <div class="form-group"><label>DESCRIBE YOUR VISION</label><textarea rows="5" placeholder="Tell us about your dream event — themes, inspirations, special elements, celebrity wishes..."></textarea></div>
+        <div class="form-group"><label>HOW DID YOU HEAR ABOUT US?</label>
+          <select><option>Word of Mouth</option><option>Social Media</option><option>Celebrity Referral</option><option>Magazine Feature</option><option>Google Search</option></select>
+        </div>
+        <div style="display:flex;gap:1rem;">
+          <button class="form-btn" style="background:transparent;border:1px solid rgba(201,168,76,0.3);color:var(--gold);" onclick="nextStep(2)">← BACK</button>
+          <button class="form-btn" onclick="submitForm()">BEGIN MY JOURNEY ✨</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- DESTINATIONS -->
+<section id="destinations">
+  <div class="destinations-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">WE OPERATE WORLDWIDE</div>
+    <h2 class="section-title" style="text-align:center;">Our Global<br><em>Event Kingdom</em></h2>
+  </div>
+  <div class="dest-grid reveal">
+    <div class="dest-card"><span class="dest-flag">🇮🇳</span><div class="dest-name">India</div><div class="dest-count">23 Signature Venues</div></div>
+    <div class="dest-card"><span class="dest-flag">🇦🇪</span><div class="dest-name">Dubai & UAE</div><div class="dest-count">8 Premium Locations</div></div>
+    <div class="dest-card"><span class="dest-flag">🇬🇷</span><div class="dest-name">Santorini & Greece</div><div class="dest-count">5 Cliffside Estates</div></div>
+    <div class="dest-card"><span class="dest-flag">🇫🇷</span><div class="dest-name">Paris & French Riviera</div><div class="dest-count">7 Château Venues</div></div>
+    <div class="dest-card"><span class="dest-flag">🇮🇹</span><div class="dest-name">Tuscany & Amalfi</div><div class="dest-count">6 Villa Estates</div></div>
+    <div class="dest-card"><span class="dest-flag">🏝️</span><div class="dest-name">Maldives</div><div class="dest-count">4 Private Island Resorts</div></div>
+    <div class="dest-card"><span class="dest-flag">🇬🇧</span><div class="dest-name">London & UK</div><div class="dest-count">5 Heritage Estates</div></div>
+    <div class="dest-card"><span class="dest-flag">🌏</span><div class="dest-name">Southeast Asia</div><div class="dest-count">Bali, Bangkok, Singapore</div></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- AI PLANNER -->
+<section id="ai-planner">
+  <div class="ai-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">POWERED BY AI</div>
+    <h2 class="section-title" style="text-align:center;">Meet Divya — Your<br><em>AI Event Muse</em></h2>
+    <p style="color:var(--platinum);font-size:0.85rem;max-width:500px;margin:1.5rem auto 0;text-align:center;line-height:1.9;">Get instant luxury event recommendations, venue suggestions, theme ideas, and expert guidance — available 24/7 for your extraordinary vision.</p>
+  </div>
+  <div class="ai-container reveal">
+    <div class="ai-badge">✦ DIVYA AI — LUXURY EVENT INTELLIGENCE</div>
+    <div class="ai-chat" id="aiChat">
+      <div class="ai-msg">
+        <div class="ai-avatar">✨</div>
+        <div class="ai-bubble">Namaste! I am Divya, your personal luxury event curator from Rajmahal. I'm here to help you design the most extraordinary celebration of your life. Tell me — what kind of magical event are you envisioning? 💫</div>
+      </div>
+    </div>
+    <div class="ai-input-row">
+      <input class="ai-input" id="aiInput" placeholder="Describe your dream event..." onkeypress="if(event.key==='Enter')sendAiMsg()">
+      <button class="ai-send" onclick="sendAiMsg()">SEND →</button>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- TEAM -->
+<section id="team" style="background:var(--black2);">
+  <div class="team-header reveal">
+    <div class="section-eyebrow" style="justify-content:center;">THE VISIONARIES</div>
+    <h2 class="section-title" style="text-align:center;">Masters Behind<br><em>Every Legend</em></h2>
+  </div>
+  <div class="team-grid reveal">
+    <div class="team-card">
+      <div class="team-photo" style="background:linear-gradient(135deg,#1a0f2e,#2d1854);">
+       <div class="team-image">
+   <img src="public/akhil.jpeg" alt="Akhil">
+</div>
+        <div class="team-overlay">
+          <div class="team-social">
+            <div class="t-social-btn">in</div>
+            <div class="t-social-btn">ig</div>
+          </div>
+        </div>
+      </div>
+      <div class="team-info">
+        <div class="team-name">Akhil</div>
+        <div class="team-role">FOUNDER & CREATIVE VISIONARY</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo" style="background:linear-gradient(135deg,#1a0a0a,#2e1a1a);">
+       <div class="team-image">
+   <img src="public/siddu.jpeg" alt="Siddhartha">
+</div>
+        <div class="team-overlay">
+          <div class="team-social">
+            <div class="t-social-btn">in</div>
+            <div class="t-social-btn">ig</div>
+          </div>
+        </div>
+      </div>
+      <div class="team-info">
+        <div class="team-name">Siddartha</div>
+        <div class="team-role">CHIEF DESIGN ARCHITECT</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo" style="background:linear-gradient(135deg,#0a1a0a,#0a2e1a);">
+       <div class="team-image">
+   <img src="public/ashok.jpeg" alt="Ashok T">
+</div>
+        <div class="team-overlay">
+          <div class="team-social">
+            <div class="t-social-btn">in</div>
+            <div class="t-social-btn">ig</div>
+          </div>
+        </div>
+      </div>
+      <div class="team-info">
+        <div class="team-name">Ashok T</div>
+        <div class="team-role">PRODUCTION DIRECTOR</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo" style="background:linear-gradient(135deg,#1a1a0a,#2e2a0a);">
+        <div class="team-image">
+   <img src="public/arjun.jpeg" alt="Arjun">
+</div>
+        <div class="team-overlay">
+          <div class="team-social">
+            <div class="t-social-btn">in</div>
+            <div class="t-social-btn">ig</div>
+          </div>
+        </div>
+      </div>
+      <div class="team-info">
+        <div class="team-name">Arjun</div>
+        <div class="team-role">CLIENT EXPERIENCE DIRECTOR</div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="blog-header reveal">
+    <div>
+      <div class="section-eyebrow">INSIGHTS & INSPIRATION</div>
+      <h2 class="section-title">The <em>Rajmahal</em> Journal</h2>
+    </div>
+    <button class="btn-secondary" style="white-space:nowrap;">VIEW ALL ARTICLES</button>
+  </div>
+  <div class="blog-grid reveal">
+    <div class="blog-card featured">
+      <div class="blog-img">
+
+   <img src="public/royal wedding.jpeg" alt="Royal Wedding">
+
+</div>
+      <div class="blog-cat">ROYAL WEDDINGS</div>
+      <div class="blog-title">How We Transformed a Jaipur Fort into a 3-Day Royal Wedding Universe</div>
+      <div class="blog-date">March 15, 2025</div>
+    </div>
+    <div class="blog-card">
+         <div class="blog-img">
+
+   <img src="public/destination.webp" alt="Destination">
+
+</div>
+      <div class="blog-cat">DESTINATION</div>
+      <div class="blog-title">The Most Breathtaking Destination Wedding Venues of 2025</div>
+      <div class="blog-date">February 28, 2025</div>
+    </div>
+    <div class="blog-card">
+         <div class="blog-img">
+
+   <img src="public/trends.webp" alt="Trend">
+
+</div>
+      <div class="blog-cat">TRENDS</div>
+      <div class="blog-title">Indian Luxury Event Trends Dominating 2025</div>
+      <div class="blog-date">January 10, 2025</div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-container">
+    <div class="reveal-left">
+      <div class="section-eyebrow">REACH OUT</div>
+      <h2 class="section-title">Let's Create<br><em>Something</em><br>Legendary</h2>
+      <div class="gold-line"></div>
+      <div class="contact-info" style="margin-top:2rem;">
+        <div class="contact-detail">
+          <div class="contact-icon">📍</div>
+          <div><div class="contact-label">HEADQUARTERS</div><div class="contact-val">The Rajmahal Atelier, Level 42<br>Bandra Kurla Complex, Mumbai 400051</div></div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">📞</div>
+          <div><div class="contact-label">PRIVATE CONCIERGE</div><div class="contact-val">+91 98765 43210<br>+91 11234 56789</div></div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">✉️</div>
+          <div><div class="contact-label">EMAIL ROYALE</div><div class="contact-val">concierge@rajmahalevents.com<br>royal@rajmahalevents.com</div></div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">🕐</div>
+          <div><div class="contact-label">CONSULTATION HOURS</div><div class="contact-val">Monday – Saturday: 10AM – 8PM<br>Private appointments available 24/7</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal-right">
+      <div class="form-title" style="margin-bottom:2rem;">Send Us A Message</div>
+      <div class="form-row">
+        <div class="form-group"><label>NAME</label><input type="text" placeholder="Your full name"></div>
+        <div class="form-group"><label>PHONE</label><input type="tel" placeholder="+91 XXXXX XXXXX"></div>
+      </div>
+      <div class="form-group"><label>EMAIL</label><input type="email" placeholder="your@email.com"></div>
+      <div class="form-group"><label>SUBJECT</label>
+        <select><option>Wedding Inquiry</option><option>Corporate Event</option><option>Celebrity Event</option><option>General Consultation</option><option>Partnership</option></select>
+      </div>
+      <div class="form-group"><label>MESSAGE</label><textarea rows="5" placeholder="Tell us about your vision..."></textarea></div>
+      <button class="form-btn">SEND MESSAGE →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">RAJMAHAL</div>
+      <div class="footer-tagline">"Where Dreams Become Dynasties"</div>
+      <p style="font-size:0.8rem;color:var(--platinum);margin-top:1.5rem;line-height:1.9;max-width:300px;">India's most prestigious luxury event atelier. Crafting extraordinary celebrations since 2007.</p>
+    </div>
+    <div>
+      <div class="footer-heading">SERVICES</div>
+      <ul class="footer-links">
+        <li><a href="#">Royal Weddings</a></li>
+        <li><a href="#">Destination Weddings</a></li>
+        <li><a href="#">Celebrity Events</a></li>
+        <li><a href="#">Corporate Galas</a></li>
+        <li><a href="#">Fashion Events</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">COMPANY</div>
+      <ul class="footer-links">
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">The Team</a></li>
+        <li><a href="#">Awards</a></li>
+        <li><a href="#">Press & Media</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">CONNECT</div>
+      <ul class="footer-links">
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">YouTube</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Pinterest</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Rajmahal Events. All rights reserved. Crafted with love in India.</div>
+    <div class="footer-socials">
+      <a class="f-social" href="#">ig</a>
+      <a class="f-social" href="#">fb</a>
+      <a class="f-social" href="#">yt</a>
+      <a class="f-social" href="#">in</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// LOADER
+
+const loaderEl = document.getElementById('loader');
+const loaderCanvas = document.getElementById('loaderCanvas');
+const lctx = loaderCanvas.getContext('2d');
+loaderCanvas.width = window.innerWidth;
+loaderCanvas.height = window.innerHeight;
+
+const particles = [];
+for(let i=0;i<200;i++){
+  particles.push({
+    x:Math.random()*loaderCanvas.width,y:Math.random()*loaderCanvas.height,
+    vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5,
+    size:Math.random()*2+0.5,opacity:Math.random(),
+    color:`hsl(${40+Math.random()*20},${60+Math.random()*30}%,${50+Math.random()*30}%)`
+  });
+}
+function animateLoader(){
+  lctx.clearRect(0,0,loaderCanvas.width,loaderCanvas.height);
+  particles.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.opacity+=Math.sin(Date.now()/1000+p.x)*0.01;
+    if(p.x<0)p.x=loaderCanvas.width;if(p.x>loaderCanvas.width)p.x=0;
+    if(p.y<0)p.y=loaderCanvas.height;if(p.y>loaderCanvas.height)p.y=0;
+    p.opacity=Math.max(0.1,Math.min(0.8,p.opacity));
+    lctx.beginPath();lctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    lctx.fillStyle=p.color;lctx.globalAlpha=p.opacity;lctx.fill();
+  });
+  lctx.globalAlpha=1;
+  requestAnimationFrame(animateLoader);
+}
+animateLoader();
+function skipLoader(){loaderEl.classList.add('fade-out');setTimeout(()=>loaderEl.style.display='none',1200);}
+setTimeout(skipLoader,4000);
+
+// CURSOR
+const cursor=document.getElementById('cursor');const ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=mx-6+'px';cursor.style.top=my-6+'px';
+});
+function animateCursor(){
+  rx+=(mx-rx)*0.15;ry+=(my-ry)*0.15;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+document.querySelectorAll('a,button,.service-card,.showcase-item,.category-item,.dest-card,.blog-card,.pricing-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2.5)';ring.style.transform='translate(-50%,-50%) scale(1.5)';ring.style.borderColor='rgba(201,168,76,0.8)';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.borderColor='rgba(201,168,76,0.6)';});
+});
+
+// HERO CANVAS
+const heroCanvas=document.getElementById('hero-canvas');const hctx=heroCanvas.getContext('2d');
+heroCanvas.width=window.innerWidth;heroCanvas.height=window.innerHeight;
+const heroParticles=[];const mousePos={x:0,y:0};
+for(let i=0;i<150;i++){
+  heroParticles.push({
+    x:Math.random()*heroCanvas.width,y:Math.random()*heroCanvas.height,
+    vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,
+    size:Math.random()*2+0.3,opacity:Math.random()*0.7+0.1,
+    color:`hsl(${38+Math.random()*15},${50+Math.random()*40}%,${45+Math.random()*30}%)`,
+    orig:{x:0,y:0}
+  });
+}
+heroParticles.forEach(p=>{p.orig.x=p.x;p.orig.y=p.y;});
+document.addEventListener('mousemove',e=>{mousePos.x=e.clientX;mousePos.y=e.clientY;});
+function drawHero(){
+  hctx.clearRect(0,0,heroCanvas.width,heroCanvas.height);
+  const grad=hctx.createRadialGradient(heroCanvas.width/2,heroCanvas.height/2,0,heroCanvas.width/2,heroCanvas.height/2,heroCanvas.width*0.8);
+  grad.addColorStop(0,'rgba(30,15,50,0.97)');
+  grad.addColorStop(0.5,'rgba(15,8,25,0.98)');
+  grad.addColorStop(1,'rgba(6,5,10,1)');
+  hctx.fillStyle=grad;hctx.fillRect(0,0,heroCanvas.width,heroCanvas.height);
+  const mouseGrad=hctx.createRadialGradient(mousePos.x,mousePos.y,0,mousePos.x,mousePos.y,300);
+  mouseGrad.addColorStop(0,'rgba(201,168,76,0.08)');mouseGrad.addColorStop(1,'transparent');
+  hctx.fillStyle=mouseGrad;hctx.fillRect(0,0,heroCanvas.width,heroCanvas.height);
+  heroParticles.forEach(p=>{
+    const dx=mousePos.x-p.x,dy=mousePos.y-p.y;
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<200){p.vx-=dx/dist*0.03;p.vy-=dy/dist*0.03;}
+    p.vx+=(p.orig.x-p.x)*0.001;p.vy+=(p.orig.y-p.y)*0.001;
+    p.x+=p.vx;p.y+=p.vy;p.vx*=0.99;p.vy*=0.99;
+    p.opacity=0.3+Math.sin(Date.now()/2000+p.x*0.01)*0.4;
+    hctx.beginPath();hctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    hctx.fillStyle=p.color;hctx.globalAlpha=p.opacity;hctx.fill();
+  });
+  hctx.globalAlpha=0.06;
+  for(let i=0;i<5;i++){
+    const r=100+i*80;
+    const cx=heroCanvas.width/2+Math.sin(Date.now()/4000+i)*30;
+    const cy=heroCanvas.height/2+Math.cos(Date.now()/3000+i)*20;
+    hctx.beginPath();hctx.arc(cx,cy,r,0,Math.PI*2);
+    hctx.strokeStyle='#C9A84C';hctx.lineWidth=0.5;hctx.stroke();
+  }
+  hctx.globalAlpha=1;
+  requestAnimationFrame(drawHero);
+}
+drawHero();
+window.addEventListener('resize',()=>{
+  heroCanvas.width=window.innerWidth;heroCanvas.height=window.innerHeight;
+  loaderCanvas.width=window.innerWidth;loaderCanvas.height=window.innerHeight;
+});
+
+// NAV SCROLL
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50);
+});
+
+// MOBILE MENU
+function toggleMenu(){
+  document.getElementById('mobileMenu').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+}
+
+// COUNTER ANIMATION
+function animateCounters(){
+  document.querySelectorAll('.stat-num[data-target]').forEach(el=>{
+    const target=+el.dataset.target;let start=0;
+    const dur=2000;const step=target/dur*16;
+    const timer=setInterval(()=>{
+      start+=step;if(start>=target){start=target;clearInterval(timer);}
+      el.textContent=Math.floor(start)+(el.nextSibling&&el.nextSibling.textContent&&el.nextSibling.textContent.includes('%')?'':'+');
+    },16);
+  });
+}
+setTimeout(animateCounters,2500);
+
+// SCROLL REVEAL
+const revealEls=document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});
+},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});
+revealEls.forEach(el=>observer.observe(el));
+
+// TESTIMONIALS
+let currentSlide=0;
+const slides=document.querySelectorAll('.testimonial-card');
+const dots=document.querySelectorAll('.t-dot');
+function goToSlide(n){
+  slides[currentSlide].classList.remove('active');dots[currentSlide].classList.remove('active');
+  currentSlide=n;slides[currentSlide].classList.add('active');dots[currentSlide].classList.add('active');
+}
+setInterval(()=>goToSlide((currentSlide+1)%slides.length),5000);
+
+// BOOKING FORM
+function nextStep(n){
+  document.querySelectorAll('.form-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  document.querySelectorAll('.step-dot').forEach((d,i)=>{
+    d.classList.remove('active','done');
+    if(i<n-1)d.classList.add('done');else if(i===n-1)d.classList.add('active');
+  });
+}
+function updateBudget(v){
+  const val=+v;
+  document.getElementById('budgetDisplay').textContent=val>=100?'₹'+Math.round(val/100*10)/10+'Cr+':'₹'+val+' Lakhs';
+}
+function submitForm(){
+  document.getElementById('step3').innerHTML='<div style="text-align:center;padding:3rem 0;"><div style="font-size:3rem;margin-bottom:1.5rem;">✨</div><div class="form-title" style="color:var(--gold);margin-bottom:1rem;">Request Received!</div><p style="color:var(--platinum);font-size:0.85rem;line-height:1.9;">Our luxury event concierge will contact you within 24 hours to begin crafting your extraordinary celebration.</p></div>';
+}
+
+// AI CHAT
+const aiResponses=[
+  "How absolutely divine! I can envision a magical celebration for you. Could you share more about your preferred aesthetic — are you drawn to traditional royal Indian grandeur, contemporary luxury, or perhaps a fusion of both?",
+  "Magnificent vision! For a celebration of this caliber, I'd recommend our Platinum Maharaja package. We could arrange a private palace in Jaipur, a 100-piece orchestra, and Bollywood celebrity performances. Shall I connect you with our chief curator?",
+  "That sounds like a dream worth turning into reality! Our team has orchestrated similar celebrations across Udaipur, Goa, and Dubai. I'll arrange a private consultation with Akhil himself to discuss your vision in detail.",
+  "Perfect. Your event will be the talk of the season! Our floral architects can create a breathtaking 40-foot mandala installation, and our production team can arrange aerial drones with light shows. Would you like to schedule a design reveal session?"
+];
+let aiIdx=0;
+function sendAiMsg(){
+  const input=document.getElementById('aiInput');
+  const msg=input.value.trim();if(!msg)return;
+  const chat=document.getElementById('aiChat');
+  chat.innerHTML+=`<div class="ai-msg ai-user"><div class="ai-avatar" style="background:linear-gradient(135deg,#2d1854,#1a0f2e);">you</div><div class="ai-bubble">${msg}</div></div>`;
+  input.value='';
+  setTimeout(()=>{
+    chat.innerHTML+=`<div class="ai-msg"><div class="ai-avatar">✨</div><div class="ai-bubble">${aiResponses[aiIdx%aiResponses.length]}</div></div>`;
+    aiIdx++;chat.scrollTop=chat.scrollHeight;
+  },1000);
+  chat.scrollTop=chat.scrollHeight;
+}
+</script>
+</body>
+</html>
